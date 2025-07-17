@@ -1,0 +1,34 @@
+services:
+  app:
+    build: 
+      context: .
+    restart: 'always'
+    container_name: 'aplicacao_mini_erp'
+    ports:
+      - '8082:80'
+    networks:
+      - netework-erp 
+    depends_on:
+      - database
+    volumes:
+      - ./:/var/www/html
+      
+  database:
+    image: 'mysql:5.7.43'
+    restart: 'always'
+    container_name: 'banco_mini_erp'
+    environment:
+      MYSQL_DATABASE: mini_erp
+      MYSQL_ROOT_PASSWORD: 'mini_erp_teste'
+    networks:
+      - netework-erp
+    volumes:
+      - banco-erp:/var/lib/mysql
+    ports:
+      - 3306:3306
+
+volumes:
+  banco-erp:
+
+networks:
+  netework-erp: 
