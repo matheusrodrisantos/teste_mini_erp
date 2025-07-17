@@ -1,16 +1,12 @@
 <?php
 namespace App\Controller;
 
-class HomeController
+class HomeController extends BaseController 
 {
-
-    public function __construct()
-    {
-
-    }
-
     public function index(): void
-    {
-        
+    {     
+        $this->render('home.twig', [
+            'title' => 'Bem-vindo ao Mini ERP!',
+        ]);
     }
 }

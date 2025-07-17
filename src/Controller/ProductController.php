@@ -1,11 +1,19 @@
 <?php 
 
+namespace App\Controller;
+
 use App\Controller\Controller;
 
-class ProductController implements Controller
+
+class ProductController extends BaseController
 {
     public function index()
-    {   
+    {
+
+        echo "asdda";
+         $this->render('product.twig', [
+            'title' => 'Bem-vindo ao Mini ERP!',
+        ]);
     }
 
     public function show($id)

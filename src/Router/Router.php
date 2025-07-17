@@ -46,6 +46,9 @@ class Router
 
     private function handle($handler, array $vars): void
     {
+
+        $twig = require __DIR__ . '/../../bootstrap.php';
+
         if (is_callable($handler)) {
             call_user_func_array($handler, $vars);
             return;
@@ -60,7 +63,7 @@ class Router
                 return;
             }
 
-            $controller = new $controllerClass();
+            $controller = new $controllerClass($twig);
 
             if (!method_exists($controller, $methodName)) {
                 echo "Erro: Método $methodName não encontrado no controller $controllerName.";

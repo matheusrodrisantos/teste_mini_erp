@@ -15,10 +15,9 @@ RUN docker-php-ext-install mysqli && docker-php-ext-enable mysqli
 
 RUN apt-get install libxml2-dev -y
 
-RUN a2enmod rewrite
+
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
 
 RUN a2enmod rewrite
 
