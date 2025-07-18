@@ -4,9 +4,19 @@ namespace App\Router;
 
 use FastRoute\RouteCollector;
 use FastRoute\Dispatcher;
+use Psr\Container\ContainerInterface;
 
 class Router
 {
+
+    private ContainerInterface $container;
+
+    public function __construct()
+    {
+        $this->container = require __DIR__ . '/../../bootstrap.php';
+    }
+
+
     public function dispatch(): void
     {
         $dispatcher = \FastRoute\simpleDispatcher(function (RouteCollector $r) {
@@ -47,8 +57,6 @@ class Router
     private function handle($handler, array $vars): void
     {
 
-        $twig = require __DIR__ . '/../../bootstrap.php';
-
         if (is_callable($handler)) {
             call_user_func_array($handler, $vars);
             return;
@@ -63,7 +71,7 @@ class Router
                 return;
             }
 
-            $controller = new $controllerClass($twig);
+            $controller = $this->container->get($controllerClass);
 
             if (!method_exists($controller, $methodName)) {
                 echo "Erro: Método $methodName não encontrado no controller $controllerName.";
