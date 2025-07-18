@@ -14,7 +14,7 @@ services:
       - ./:/var/www/html
       
   database:
-    image: 'mysql:5.7.43'
+    image: 'mysql:8.0'
     restart: 'always'
     container_name: 'banco_mini_erp'
     environment:
