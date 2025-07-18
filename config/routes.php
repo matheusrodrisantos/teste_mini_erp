@@ -16,3 +16,9 @@ $r->addRoute(
     route: '/product', 
     handler: 'ProductController@index'
 );
+
+$r->addRoute(
+    httpMethod: 'POST', 
+    route: '/product', 
+    handler: 'ProductController@store'
+);

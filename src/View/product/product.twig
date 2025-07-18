@@ -145,8 +145,66 @@
 </head>
 <body>
     <div class="container">
-      
+        <h1>Gerenciamento de Produtos</h1>
+        <p class="text-muted">Gerencie seus produtos de forma simples e eficiente.</p>
 
-    
+        <div class="form-section">
+            <h2>Cadastrar/Editar Produto</h2>
+            <form id="productForm" method="post" action="/product">
+                <input type="hidden" id="productId" name="id">
+                <div class="mb-3">
+                    <label for="productName" class="form-label">Nome do Produto</label>
+                    <input type="text" class="form-control" id="productName" name="name" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="productPrice" class="form-label">Preço</label>
+                    <input type="number" class="form-control" id="productPrice" name="price" step="0.01" min="0" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="productStock" class="form-label">Estoque Principal</label>
+                    <input type="number" class="form-control" id="productStock" name="stock" min="0" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="productVariations" class="form-label">Variações (ex: P, M, G)</label>
+                    <input type="text" class="form-control" id="productVariations" name="variations">
+                    <small class="form-text">Separe por vírgulas para gerenciar estoques individualmente.</small>
+                </div>
+
+                <div id="variationStockSection" style="display: none;">
+                    <h4>Estoque por Variação</h4>
+                    <div id="variationStockInputs"></div>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                    <button type="button" class="btn btn-secondary" id="clearFormBtn">Limpar</button>
+                </div>
+            </form>
+        </div>
+
+        <hr>
+
+        <div class="form-section">
+            <h2>Lista de Produtos</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Preço</th>
+                        <th>Estoque</th>
+                        <th>Variações</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="productList"></tbody>
+            </table>
+        </div>
+    </div>
+
+  
 </body>
 </html>
