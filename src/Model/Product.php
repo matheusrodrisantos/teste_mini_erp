@@ -4,7 +4,7 @@ namespace App\Model;
 class Product
 {
     private int $id;
-
+    private array $variations = [];
     public function __construct(
         private string $name,
         private float $price,
@@ -43,6 +43,25 @@ class Product
             throw new \InvalidArgumentException('Price cannot be less than 0.');
         }
         $this->price = $price;
+        return $this;
+    }
+
+
+    public function addVariation(Variation $variation): self
+    {
+        $this->variations[] = $variation;
+        return $this;
+    }
+
+    /** @return Variation[] */
+    public function getVariations(): array
+    {
+        return $this->variations;
+    }
+
+    public function setVariations(array $variations): self
+    {
+        $this->variations = $variations;
         return $this;
     }
 
