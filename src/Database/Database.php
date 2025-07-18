@@ -13,7 +13,7 @@ class Database
             'dbname'   => 'mini_erp',
             'user'     => 'root',
             'password' => 'mini_erp_teste',
-            'host'     => '127.0.0.1',
+            'host'     => 'banco_mini_erp',
             'driver'   => 'pdo_mysql',
         ]);
     }
