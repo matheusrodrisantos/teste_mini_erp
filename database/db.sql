@@ -12,7 +12,6 @@ CREATE TABLE variations (
     id INT AUTO_INCREMENT PRIMARY KEY,
     description VARCHAR(100) NOT NULL,
     product_id INT NOT NULL,
-    quantity INT NOT NULL DEFAULT 0,
     CONSTRAINT fk_variations_product FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 );
 
