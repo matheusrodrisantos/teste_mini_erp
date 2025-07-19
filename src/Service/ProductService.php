@@ -12,6 +12,26 @@ class ProductService
     public function __construct(private ProductRepository $productRepository)
     {}
 
+    public function updateProduct(array $data): Product
+    {
+        $product = new Product(name: $data['name'],
+            price: $data['price']
+        );
+        $product->setId($data['price']);
+
+        $stockQtd  = $data['stock'];
+        $variation = new Variation($data['variation'], $product);
+        $variation->setId($data['variation_id']);
+        $inventory = new Inventory($variation, $stockQtd);
+        $inventory->setId($data['stock_id']);
+        $variation->setIventory($inventory);
+        $product->addVariation($variation);
+
+        $this->productRepository->update($product);
+
+        return $product;
+    }
+
     public function saveProduct(array $data): Product
     {
 
@@ -42,7 +62,7 @@ class ProductService
         $variation->setIventory($inventory);
         $product->addVariation($variation);
         $this->productRepository->save($product);
-        
+
         return $product;
     }
 }

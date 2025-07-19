@@ -52,8 +52,28 @@ class ProductController extends BaseController implements Controller
     public function edit($id)
     {}
 
-    public function update($id, $data)
-    {}
+    public function update()
+    {
+        try {
+            $product = $this->productService->updateProduct($_POST);
+            header("Content-Type: application/json");
+            http_response_code(200);
+            $response = [
+                'success' => true,
+                'message' => json_encode($product),
+            ];
+            echo json_encode($response);
+        } catch (Exception $e) {
+            http_response_code(400);
+            $response = [
+                'success' => true,
+                'error' => json_encode($e->getMessage()),
+            ];
+            echo json_encode($response);
+        }
+
+        exit;
+    }
 
     public function delete($id)
     {}

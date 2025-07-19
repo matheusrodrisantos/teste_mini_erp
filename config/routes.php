@@ -10,7 +10,6 @@ $r->addRoute(
     handler: 'HomeController@index'
 );
 
-
 $r->addRoute(
     httpMethod: 'GET', 
     route: '/product', 
@@ -21,4 +20,10 @@ $r->addRoute(
     httpMethod: 'POST', 
     route: '/product', 
     handler: 'ProductController@store'
+);
+
+$r->addRoute(
+    httpMethod: 'POST', 
+    route: '/product/update', 
+    handler: 'ProductController@update'
 );
