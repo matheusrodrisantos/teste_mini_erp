@@ -1,10 +1,10 @@
 <?php
-
 namespace App\Controller;
 
 use App\Controller\Controller;
-use App\Model\Product;
 use App\Repository\ProductRepository;
+use App\Service\ProductService;
+use Exception;
 use Twig\Environment;
 
 class ProductController extends BaseController implements Controller
@@ -12,36 +12,49 @@ class ProductController extends BaseController implements Controller
 
     public function __construct(
         Environment $twig,
-        private ProductRepository $productRepository
+        private ProductRepository $productRepository,
+        private ProductService $productService
     ) {
         $this->twig = $twig;
     }
 
     public function index()
     {
-        $this->productRepository->showProducts();   
-        $this->render('product/product.twig');
+        $products = $this->productRepository->showProducts();
+        $msg      = $_SESSION['msg'] ?? null;
+        unset($_SESSION['msg']);
+
+        $this->render('product/product.twig',
+            ['products' => $products, 'msg' => $msg]
+        );
     }
 
-    public function show($id) {}
+    public function show($id)
+    {}
 
-    public function create() {}
+    public function create()
+    {}
 
     public function store($data = [])
     {
-        $product = new Product(
-            name: $_POST['name'],
-            price: $_POST['price']
-        );
-
-        $this->productRepository->save($product);
-
-        header('Location: /product');
+        try {
+            $this->productService->saveProduct($_POST);
+            $_SESSION['msg'] = ['type' => 'success', 'message' => 'Produto cadastrado com sucesso!'];
+            header('Location: /product');
+            exit;
+        } catch (Exception $e) {
+            $_SESSION['msg'] = ['type' => 'error', 'message' => 'Erro ao cadastrar produto: ' . $e->getMessage()];
+            header('Location: /product');
+            exit;
+        }
     }
 
-    public function edit($id) {}
+    public function edit($id)
+    {}
 
-    public function update($id, $data) {}
+    public function update($id, $data)
+    {}
 
-    public function delete($id) {}
+    public function delete($id)
+    {}
 }

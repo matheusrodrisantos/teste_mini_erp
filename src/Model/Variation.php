@@ -1,13 +1,17 @@
 <?php
 namespace App\Model;
 
+use App\Model\Product;
+
 class Variation
 {
     private int $id;
 
+    private ?Inventory $inventory = null;
+
     public function __construct(
         private string $description,
-        private int $productId,
+        private Product $product,
     ) {}
 
     public function getId(): int
@@ -32,14 +36,25 @@ class Variation
         return $this;
     }
 
-    public function getProductId(): int
+    public function getProduct(): Product
     {
-        return $this->productId;
+        return $this->product;
     }
 
-    public function setProductId(int $productId): self
+    public function setProduct(Product $product): self
     {
-        $this->productId = $productId;
+        $this->product = $product;
         return $this;
+    }
+
+    public function setIventory(Inventory $inventory): self
+    {
+        $this->inventory = $inventory;
+        return $this;
+    }
+
+    public function getInventory(): ?Inventory
+    {
+        return $this->inventory;
     }
 }

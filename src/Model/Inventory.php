@@ -6,7 +6,7 @@ class Inventory
     private int $id;
 
     public function __construct(
-        private int $variationId,
+        private Variation $variation,
         private int $quantity = 0,
     ) {
         if ($quantity < 0) {
@@ -25,14 +25,14 @@ class Inventory
         return $this;
     }
 
-    public function getVariationId(): int
+    public function getVariation(): Variation
     {
-        return $this->variationId;
+        return $this->variation;
     }
 
-    public function setVariationId(int $variationId): self
+    public function setVariation(Variation $variation): self
     {
-        $this->variationId = $variationId;
+        $this->variation = $variation;
         return $this;
     }
 
