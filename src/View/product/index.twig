@@ -1,0 +1,21 @@
+{% extends 'layout/base.twig' %}
+
+{% block title %}Gerenciamento de Produtos{% endblock %}
+
+{% block content %}
+    {% if msg %}
+        <div class="alert alert-{{ msg.type }}">{{ msg.message }}</div>
+    {% endif %}
+
+    <h1>Gerenciamento de Produtos</h1>
+
+    {% include 'product/_form.twig' %}
+
+    <hr>
+
+    {% include 'product/_table.twig' %}
+{% endblock %}
+
+{% block scripts %}
+    <script src="/js/product.js"></script>
+{% endblock %}

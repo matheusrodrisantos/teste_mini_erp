@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ title }}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
     <style>
         body {
             background-color: #fafafa;
@@ -19,192 +19,254 @@
             padding: 40px;
             border-radius: 8px;
         }
-        h1 {
-            font-size: 1.8rem;
-            font-weight: 500;
-            color: #222;
+        h1, h2 {
             text-align: center;
-            margin-bottom: 30px;
-        }
-        p.text-muted {
-            font-size: 0.95rem;
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        .form-section {
-            padding: 0;
-            margin-bottom: 50px;
-            border: none;
-        }
-        h2 {
-            font-size: 1.4rem;
-            font-weight: 500;
             color: #222;
-            margin-bottom: 25px;
-        }
-        .form-label {
-            font-size: 0.9rem;
-            font-weight: 400;
-            color: #444;
-        }
-        .form-control {
-            border: 1px solid #e0e0e0;
-            border-radius: 6px;
-            font-size: 0.95rem;
-            padding: 10px;
-            background-color: #f9f9f9;
-        }
-        .form-control:focus {
-            border-color: #007bff;
-            box-shadow: none;
-            background-color: #fff;
-        }
-        .btn-primary {
-            background-color: #007bff;
-            border: none;
-            border-radius: 6px;
-            padding: 10px 20px;
-            font-size: 0.95rem;
-            font-weight: 400;
-        }
-        .btn-primary:hover {
-            background-color: #0062cc;
-        }
-        .btn-secondary {
-            background-color: #e0e0e0;
-            color: #333;
-            border: none;
-            border-radius: 6px;
-            padding: 10px 20px;
-            font-size: 0.95rem;
-            font-weight: 400;
-        }
-        .btn-secondary:hover {
-            background-color: #d0d0d0;
-        }
-        .btn-info, .btn-danger {
-            border-radius: 6px;
-            padding: 6px 12px;
-            font-size: 0.85rem;
-            font-weight: 400;
-        }
-        .table {
-            font-size: 0.95rem;
-            border-collapse: collapse;
-        }
-        .table th {
-            background-color: #f5f5f5;
-            color: #333;
-            font-weight: 500;
-            padding: 12px;
-            border-bottom: 1px solid #e0e0e0;
-        }
-        .table td {
-            padding: 12px;
-            border-bottom: 1px solid #e0e0e0;
-            vertical-align: middle;
-        }
-        .table-striped tbody tr:nth-of-type(odd) {
-            background-color: #f9f9f9;
-        }
-        .table tbody tr:hover {
-            background-color: #f0f0f0;
-        }
-        hr {
-            border: none;
-            border-top: 1px solid #e0e0e0;
-            margin: 50px 0;
-        }
-        .list-unstyled li {
-            font-size: 0.9rem;
-            color: #444;
-            margin-bottom: 4px;
-        }
-        .form-text {
-            font-size: 0.85rem;
-            color: #666;
         }
         .d-flex.gap-2 {
             gap: 10px;
         }
-        @media (max-width: 768px) {
-            body {
-                padding: 20px;
-            }
-            .container {
-                padding: 20px;
-            }
-            h1 {
-                font-size: 1.5rem;
-            }
-            h2 {
-                font-size: 1.2rem;
-            }
-        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Gerenciamento de Produtos</h1>
-        <p class="text-muted">Gerencie seus produtos de forma simples e eficiente.</p>
-
-        <div class="form-section">
-            <h2>Cadastrar/Editar Produto</h2>
-            <form id="productForm" method="post" action="/product">
-                <input type="hidden" id="productId" name="id">
-                <div class="mb-3">
-                    <label for="productName" class="form-label">Nome do Produto</label>
-                    <input type="text" class="form-control" id="productName" name="name" required>
-                </div>
-
-                <div class="mb-3">
-                    <label for="productPrice" class="form-label">Preço</label>
-                    <input type="number" class="form-control" id="productPrice" name="price" step="0.01" min="0" required>
-                </div>
-
-                <div class="mb-3">
-                    <label for="productStock" class="form-label">Estoque Principal</label>
-                    <input type="number" class="form-control" id="productStock" name="stock" min="0" required>
-                </div>
-
-                <div class="mb-3">
-                    <label for="productVariations" class="form-label">Variações (ex: P, M, G)</label>
-                    <input type="text" class="form-control" id="productVariations" name="variations">
-                    <small class="form-text">Separe por vírgulas para gerenciar estoques individualmente.</small>
-                </div>
-
-                <div id="variationStockSection" style="display: none;">
-                    <h4>Estoque por Variação</h4>
-                    <div id="variationStockInputs"></div>
-                </div>
-
-                <div class="d-flex gap-2">
-                    <button type="submit" class="btn btn-primary">Salvar</button>
-                    <button type="button" class="btn btn-secondary" id="clearFormBtn">Limpar</button>
-                </div>
-            </form>
+<div class="container">
+    {% if msg %}
+        <div class="alert alert-{{ msg.type }}">
+            {{ msg.message }}
         </div>
+    {% endif %}
+    <div id="temp"></div>
 
-        <hr>
+    <h1>Gerenciamento de Produtos</h1>
+    <p class="text-muted text-center">Gerencie seus produtos de forma simples e eficiente.</p>
 
-        <div class="form-section">
-            <h2>Lista de Produtos</h2>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nome</th>
-                        <th>Preço</th>
-                        <th>Estoque</th>
-                        <th>Variações</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody id="productList"></tbody>
-            </table>
-        </div>
+    <div class="form-section">
+        <h2>Cadastrar/Editar Produto</h2>
+        <form id="productForm" method="post" action="/product">
+            <input type="hidden" id="productId" name="id">
+
+            <div class="mb-3">
+                <label for="productName" class="form-label">Nome do Produto</label>
+                <input type="text" class="form-control" id="productName" name="name" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="productPrice" class="form-label">Preço</label>
+                <input type="number" class="form-control" id="productPrice" name="price" step="0.01" min="0" required>
+            </div>
+
+            <div class="mb-3" id="mainStockWrapper">
+                <label for="productStock" class="form-label">Estoque (sem variações)</label>
+                <input type="number" class="form-control" id="productStock" name="stock" min="0">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Variações e Estoques</label>
+                <div id="variationStockSection"></div>
+                <button type="button" class="btn btn-info mt-2" id="addVariationBtn">Adicionar Variação</button>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </div>
+        </form>
     </div>
 
-  
+    <hr>
+
+    <div class="form-section">
+        <h2>Lista de Produtos</h2>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Preço</th>
+                <th>Estoque</th>
+                <th>Variações</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody id="productList">
+            {% if products is not empty %}
+                {% for product in products %}
+                    <tr data-id="{{ product.id }}">
+                        <td class="id">{{ product.id }}</td>
+                        <td class="name">{{ product.name }}</td>
+                        <td class="price">R$ {{ product.price }}</td>
+                        <td class="stock" data-id="{{ product.stock_id }}">{{ product.stock ?? '-' }}</td>
+                        <td class="variation" data-id="{{ product.variation_id }}">{{ product.variation ?? '-' }}</td>
+                        <td class="actions">
+                            <button class="btn btn-sm btn-outline-primary editBtn">Editar</button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr><td colspan="6" class="text-center text-muted">Nenhum produto encontrado.</td></tr>
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    const variationSection = document.getElementById('variationStockSection');
+    const addVariationBtn = document.getElementById('addVariationBtn');
+    const mainStockWrapper = document.getElementById('mainStockWrapper');
+    const productStock = document.getElementById('productStock');
+
+    const variationOptions = ['PADRÃO','P', 'M', 'G', 'GG', 'XG'];
+
+    const createVariationField = () => {
+        const container = document.createElement('div');
+        container.className = 'd-flex gap-2 mb-2 align-items-center';
+
+        const select = document.createElement('select');
+        select.name = 'variation[]';
+        select.className = 'form-select';
+        select.required = true;
+
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = '-- Variação --';
+        select.appendChild(defaultOption);
+
+        variationOptions.forEach(opt => {
+            const option = document.createElement('option');
+            option.value = opt;
+            option.textContent = opt;
+            select.appendChild(option);
+        });
+
+        const input = document.createElement('input');
+        input.type = 'number';
+        input.name = 'stock[]';
+        input.className = 'form-control';
+        input.min = 0;
+        input.placeholder = 'Estoque';
+        input.required = true;
+
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.className = 'btn btn-danger';
+        removeBtn.textContent = 'Remover';
+        removeBtn.onclick = () => {
+            container.remove();
+            if (variationSection.children.length === 0) {
+                mainStockWrapper.style.display = '';
+                productStock.setAttribute('name', 'stock');
+                productStock.setAttribute('required', 'required');
+            }
+        };
+
+        container.appendChild(select);
+        container.appendChild(input);
+        container.appendChild(removeBtn);
+
+        variationSection.appendChild(container);
+
+        mainStockWrapper.style.display = 'none';
+        productStock.removeAttribute('name');
+        productStock.removeAttribute('required');
+    };
+
+    addVariationBtn.addEventListener('click', () => {
+        createVariationField();
+    });
+
+    function attachEditEvent(button) {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            const row = button.closest('tr');
+            const id = row.dataset.id;
+            const nameCell = row.querySelector('.name');
+            const priceCell = row.querySelector('.price');
+            const stockCell = row.querySelector('.stock');
+            const variationCell = row.querySelector('.variation');
+            const actionsCell = row.querySelector('.actions');
+
+            const name = nameCell.textContent.trim();
+            const price = priceCell.textContent.replace('R$', '').trim();
+            const stock = stockCell.textContent.trim();
+            const variation = variationCell.textContent.trim();
+
+            nameCell.innerHTML = `<input type="text" class="form-control form-control-sm" value="${name}">`;
+            priceCell.innerHTML = `<input type="number" class="form-control form-control-sm" value="${price}" step="0.01">`;
+            stockCell.innerHTML = `<input type="number" class="form-control form-control-sm" value="${stock}">`;
+
+            const select = document.createElement('select');
+            select.className = 'form-select form-select-sm';
+            variationOptions.forEach(opt => {
+                const option = document.createElement('option');
+                option.value = opt;
+                option.textContent = opt;
+                if (opt === variation) option.selected = true;
+                select.appendChild(option);
+            });
+            variationCell.innerHTML = '';
+            variationCell.appendChild(select);
+
+            actionsCell.innerHTML = `
+                <button class="btn btn-sm btn-success saveBtn">Salvar</button>
+                <button class="btn btn-sm btn-secondary cancelBtn">Cancelar</button>
+            `;
+
+            actionsCell.querySelector('.saveBtn').addEventListener('click', () => {
+                const newName = nameCell.querySelector('input').value;
+                const newPrice = priceCell.querySelector('input').value;
+                const newStock = stockCell.querySelector('input').value;
+                const newVariation = variationCell.querySelector('select').value;
+
+                const stockId = stockCell.dataset.id;
+                const variationId = variationCell.dataset.id;
+
+                const formData = new URLSearchParams();
+                formData.append('id', id);
+                formData.append('name', newName);
+                formData.append('price', newPrice);
+                formData.append('stock', newStock);
+                formData.append('variation', newVariation);
+                if (stockId) formData.append('stock_id', stockId);
+                if (variationId) formData.append('variation_id', variationId);
+
+                fetch('/product/update', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: formData.toString()
+                })
+                .then(res => res.json())
+                .then(data => {
+                    
+                    if (data.success) {
+                        nameCell.textContent = newName;
+                        priceCell.textContent = `R$ ${parseFloat(newPrice).toFixed(2)}`;
+                        stockCell.textContent = newStock;
+                        variationCell.textContent = newVariation;
+                        renderEditButton(actionsCell);
+                    } else {
+                        alert('Erro ao salvar');
+                    }
+                });
+            });
+
+            actionsCell.querySelector('.cancelBtn').addEventListener('click', () => {
+                nameCell.textContent = name;
+                priceCell.textContent = `R$ ${parseFloat(price).toFixed(2)}`;
+                stockCell.textContent = stock;
+                variationCell.textContent = variation;
+                renderEditButton(actionsCell);
+            });
+        });
+    }
+
+    function renderEditButton(actionsCell) {
+        actionsCell.innerHTML = `<button class="btn btn-sm btn-outline-primary editBtn">Editar</button>`;
+        const newBtn = actionsCell.querySelector('.editBtn');
+        attachEditEvent(newBtn);
+    }
+
+    document.querySelectorAll('.editBtn').forEach(attachEditEvent);
+</script>
 </body>
 </html>
