@@ -1,4 +1,33 @@
-<h2>Lista de Produtos</h2>
-<table class="table table-striped">
-    <!-- cabeçalhos e linhas -->
-</table>
+<div class="form-section">
+        <h2>Lista de Produtos</h2>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Preço</th>
+                <th>Estoque</th>
+                <th>Variações</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody id="productList">
+            {% if products is not empty %}
+                {% for product in products %}
+                    <tr data-id="{{ product.id }}">
+                        <td class="id">{{ product.id }}</td>
+                        <td class="name">{{ product.name }}</td>
+                        <td class="price">R$ {{ product.price }}</td>
+                        <td class="stock" data-id="{{ product.stock_id }}">{{ product.stock ?? '-' }}</td>
+                        <td class="variation" data-id="{{ product.variation_id }}">{{ product.variation ?? '-' }}</td>
+                        <td class="actions">
+                            <button class="btn btn-sm btn-outline-primary editBtn">Editar</button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr><td colspan="6" class="text-center text-muted">Nenhum produto encontrado.</td></tr>
+            {% endif %}
+            </tbody>
+        </table>
+    </div>

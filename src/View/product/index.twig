@@ -17,5 +17,163 @@
 {% endblock %}
 
 {% block scripts %}
-    <script src="/js/product.js"></script>
+    <script>
+    const variationSection = document.getElementById('variationStockSection');
+    const addVariationBtn = document.getElementById('addVariationBtn');
+    const mainStockWrapper = document.getElementById('mainStockWrapper');
+    const productStock = document.getElementById('productStock');
+
+    const variationOptions = ['PADRÃO','P', 'M', 'G', 'GG', 'XG'];
+
+    const createVariationField = () => {
+        const container = document.createElement('div');
+        container.className = 'd-flex gap-2 mb-2 align-items-center';
+
+        const select = document.createElement('select');
+        select.name = 'variation[]';
+        select.className = 'form-select';
+        select.required = true;
+
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = '-- Variação --';
+        select.appendChild(defaultOption);
+
+        variationOptions.forEach(opt => {
+            const option = document.createElement('option');
+            option.value = opt;
+            option.textContent = opt;
+            select.appendChild(option);
+        });
+
+        const input = document.createElement('input');
+        input.type = 'number';
+        input.name = 'stock[]';
+        input.className = 'form-control';
+        input.min = 0;
+        input.placeholder = 'Estoque';
+        input.required = true;
+
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.className = 'btn btn-danger';
+        removeBtn.textContent = 'Remover';
+        removeBtn.onclick = () => {
+            container.remove();
+            if (variationSection.children.length === 0) {
+                mainStockWrapper.style.display = '';
+                productStock.setAttribute('name', 'stock');
+                productStock.setAttribute('required', 'required');
+            }
+        };
+
+        container.appendChild(select);
+        container.appendChild(input);
+        container.appendChild(removeBtn);
+
+        variationSection.appendChild(container);
+
+        mainStockWrapper.style.display = 'none';
+        productStock.removeAttribute('name');
+        productStock.removeAttribute('required');
+    };
+
+    addVariationBtn.addEventListener('click', () => {
+        createVariationField();
+    });
+
+    function attachEditEvent(button) {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            const row = button.closest('tr');
+            const id = row.dataset.id;
+            const nameCell = row.querySelector('.name');
+            const priceCell = row.querySelector('.price');
+            const stockCell = row.querySelector('.stock');
+            const variationCell = row.querySelector('.variation');
+            const actionsCell = row.querySelector('.actions');
+
+            const name = nameCell.textContent.trim();
+            const price = priceCell.textContent.replace('R$', '').trim();
+            const stock = stockCell.textContent.trim();
+            const variation = variationCell.textContent.trim();
+
+            nameCell.innerHTML = `<input type="text" class="form-control form-control-sm" value="${name}">`;
+            priceCell.innerHTML = `<input type="number" class="form-control form-control-sm" value="${price}" step="0.01">`;
+            stockCell.innerHTML = `<input type="number" class="form-control form-control-sm" value="${stock}">`;
+
+            const select = document.createElement('select');
+            select.className = 'form-select form-select-sm';
+            variationOptions.forEach(opt => {
+                const option = document.createElement('option');
+                option.value = opt;
+                option.textContent = opt;
+                if (opt === variation) option.selected = true;
+                select.appendChild(option);
+            });
+            variationCell.innerHTML = '';
+            variationCell.appendChild(select);
+
+            actionsCell.innerHTML = `
+                <button class="btn btn-sm btn-success saveBtn">Salvar</button>
+                <button class="btn btn-sm btn-secondary cancelBtn">Cancelar</button>
+            `;
+
+            actionsCell.querySelector('.saveBtn').addEventListener('click', () => {
+                const newName = nameCell.querySelector('input').value;
+                const newPrice = priceCell.querySelector('input').value;
+                const newStock = stockCell.querySelector('input').value;
+                const newVariation = variationCell.querySelector('select').value;
+
+                const stockId = stockCell.dataset.id;
+                const variationId = variationCell.dataset.id;
+
+                const formData = new URLSearchParams();
+                formData.append('id', id);
+                formData.append('name', newName);
+                formData.append('price', newPrice);
+                formData.append('stock', newStock);
+                formData.append('variation', newVariation);
+                if (stockId) formData.append('stock_id', stockId);
+                if (variationId) formData.append('variation_id', variationId);
+
+                fetch('/product/update', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: formData.toString()
+                })
+                .then(res => res.json())
+                .then(data => {
+                    
+                    if (data.success) {
+                        nameCell.textContent = newName;
+                        priceCell.textContent = `R$ ${parseFloat(newPrice).toFixed(2)}`;
+                        stockCell.textContent = newStock;
+                        variationCell.textContent = newVariation;
+                        renderEditButton(actionsCell);
+                    } else {
+                        alert('Erro ao salvar');
+                    }
+                });
+            });
+
+            actionsCell.querySelector('.cancelBtn').addEventListener('click', () => {
+                nameCell.textContent = name;
+                priceCell.textContent = `R$ ${parseFloat(price).toFixed(2)}`;
+                stockCell.textContent = stock;
+                variationCell.textContent = variation;
+                renderEditButton(actionsCell);
+            });
+        });
+    }
+
+    function renderEditButton(actionsCell) {
+        actionsCell.innerHTML = `<button class="btn btn-sm btn-outline-primary editBtn">Editar</button>`;
+        const newBtn = actionsCell.querySelector('.editBtn');
+        attachEditEvent(newBtn);
+    }
+
+    document.querySelectorAll('.editBtn').forEach(attachEditEvent);
+</script>
 {% endblock %}
